@@ -34,4 +34,4 @@ variables:
   - name: vmLock
     value: "No"
   - name: vmDNS
-    value: "nicolasz"
+    value: "$(prfname)"
