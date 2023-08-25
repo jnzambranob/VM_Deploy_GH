@@ -1,99 +1,39 @@
-parameters:
-  env: ''
-
 variables:
-#Prefixes
-- name: prfname
-  value: "nicolasz"
-- name: prfnamecaps
-  value: "NicolasZ"
+  #Prefixes
+  - name: prfname
+    value: "nicolasz"
+  - name: prfnamecaps
+    value: "NicolasZ"
 
-- ${{ if eq(parameters.env, 'PRD') }}:
-  #Infrastructure Variables
+  #General Variables
   - name: ResourceGroup
-    value: "$(prfnamecaps)-RG"
+    value: "$(prfnamecaps)-VM-RG"
   - name: artifactName
     value: InfraArtifact
+  - name: resourcesLocation
+    value: "East US 2"
+  #KV Variables
   - name: kvName
     value: "$(prfname)-kvdefault"
   - name: secretName
-    value: "sqlsecret"
-  - name: apiName
-    value: "$(prfname)-apiapp"
-  - name: webName
-    value: "$(prfname)-webapp"
-  - name: sqlName
-    value: "$(prfname)sqlserver"
-  - name: insightName
-    value: "$(prfname)appinsight"
-  - name: loganalyticsName
-    value: "$(prfname)loganalytics"
-  - name: storageName
-    value: "$(prfname)storageaccountdf"
-  - name: sqlLogin
-    value: "armtemplatestrial"
-  - name: sqldbName
-    value: "$(prfname)DB"
+    value: "vmpass"
   - name: kvLock
     value: "No"
   - name: kvSoftdelete
-    value: true
-  - name: resourcesLocation
-    value: "East US 2"
-  #Node Build Variables
-  - name: nodeZipName
-    value: nodeproject.zip
-  - name: nodeartifactName
-    value: NodeArtifact
-  #Dotnet Build Variables
-  - name: dotnetZipName
-    value: dotnetproject
-  - name: dotnetartifactName
-    value: DotnetArtifact
-  - name: buildConfiguration
-    value: 'Release'
-
-- ${{ if eq(parameters.env, 'DEV') }}:
-  #Infrastructure Variables
-  - name: ResourceGroup
-    value: "$(prfnamecaps)-RG-dev"
-  - name: artifactName
-    value: InfraArtifactdev
-  - name: kvName
-    value: "$(prfname)-kvdefault-dev"
-  - name: secretName
-    value: "sqlsecret"
-  - name: apiName
-    value: "$(prfname)-apiapp-dev"
-  - name: webName
-    value: "$(prfname)-webapp-dev"
-  - name: sqlName
-    value: "$(prfname)sqlserver"
-  - name: insightName
-    value: "$(prfname)appinsight"
-  - name: loganalyticsName
-    value: "$(prfname)loganalytics"
+    value: false
+  #STORAGE Variables
   - name: storageName
     value: "$(prfname)storageaccountdf"
-  - name: sqlLogin
-    value: "armtemplatestrial"
-  - name: sqldbName
-    value: "$(prfname)DB"
-  - name: kvLock
+  #VM Variables
+  - name: vmUser
+    value: "trainingvm"
+  - name: vmPass
+    value: "Aconsulting123!@"
+  - name: datadisksize
+    value: "25"
+  - name: vmSKU
+    value: "Standard_D2s_v3"
+  - name: vmLock
     value: "No"
-  - name: kvSoftdelete
-    value: true
-  - name: resourcesLocation
-    value: "East US"
-  #Node Build Variables
-  - name: nodeZipName
-    value: nodeprojectdev.zip
-  - name: nodeartifactName
-    value: NodeArtifactdev
-  #Dotnet Build Variables
-  - name: dotnetZipName
-    value: dotnetprojectdev
-  - name: dotnetartifactName
-    value: DotnetArtifactdev
-  - name: buildConfiguration
-    value: 'Release'
+  - name: vmDNS
+    value: "nicolasz"

@@ -58,7 +58,7 @@ if ($mode -eq "Getkey") {
         #$passsafe = ConvertTo-SecureString -String $pass -AsPlainText -Force
         #Write-Host $pass
         Write-Host "Storing variable in the pipeline enviroment"
-        Write-Host "##vso[task.setvariable variable=sqlsecret]$pass"
+        Write-Host "##vso[task.setvariable variable=vmPass]$pass"
     }
 }
 elseif ($mode -eq "Setkey") {

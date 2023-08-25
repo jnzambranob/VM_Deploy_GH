@@ -1,0 +1,30 @@
+steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      artifactName: "$(artifactName)"
+      targetPath: "$(Build.SourcesDirectory)"
+    displayName: "Download Infrastructure Artifact"
+
+  - task: AzurePowerShell@5
+    inputs:
+      azureSubscription: "ArroyoTraining_Connection-NicolasTraining"
+      ScriptType: "FilePath"
+      ScriptPath: "$(Build.SourcesDirectory)/keygen.ps1"
+      scriptArguments: -kvName $(kvName) `
+        -secretName $(secretName) `
+        -mode Getkey
+      azurePowerShellVersion: "LatestVersion"
+
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      deploymentScope: "Resource Group"
+      azureResourceManagerConnection: "ArroyoTraining_Connection-NicolasTraining"
+      subscriptionId: "a4924200-2523-46cf-a092-0479ad3fe852"
+      action: "Create Or Update Resource Group"
+      resourceGroupName: "$(ResourceGroup)"
+      location: "$(resourcesLocation)"
+      templateLocation: "Linked artifact"
+      csmFile: "$(Build.SourcesDirectory)/vmdep.json"
+      csmParametersFile: "$(Build.SourcesDirectory)/vmdep.parameters.json"
+      overrideParameters: "-prefixname $(prfname) -storageAccountName $(storageName) -adminUsername $(vmUser) -adminPassword $(vmPass) -dnsLabelPrefix $(vmDNS) -sizeOfEachDataDiskInGB $(vmDataSize) -vmLock $(vmLock) -vmSize $(vmSKU)"
+      deploymentMode: "Incremental"

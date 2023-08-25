@@ -1,0 +1,21 @@
+steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      artifactName: "$(artifactName)"
+      targetPath: "$(Build.SourcesDirectory)"
+    displayName: "Download Infrastructure Artifact"
+
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      deploymentScope: "Resource Group"
+      azureResourceManagerConnection: "ArroyoTraining_Connection-NicolasTraining"
+      subscriptionId: "a4924200-2523-46cf-a092-0479ad3fe852"
+      action: "Create Or Update Resource Group"
+      resourceGroupName: "$(ResourceGroup)"
+      location: "$(resourcesLocation)"
+      templateLocation: "Linked artifact"
+      csmFile: "$(Build.SourcesDirectory)/kvsto.json"
+      csmParametersFile: "$(Build.SourcesDirectory)/kvsto.parameters.json"
+      overrideParameters: "-lockKv $(kvLock) -enableSoftDelete $(kvSoftdelete) -storageAccountName $(storageName) -vaultName $(kvName)"
+      deploymentMode: "Incremental"
+

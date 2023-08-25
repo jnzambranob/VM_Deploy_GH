@@ -1,0 +1,20 @@
+steps:
+  - task: AzurePowerShell@5
+    inputs:
+      azureSubscription: "ArroyoTraining_Connection-NicolasTraining"
+      ScriptType: "FilePath"
+      ScriptPath: "$(Build.SourcesDirectory)/keygen.ps1"
+      scriptArguments: -kvName $(kvName) `
+        -secretName $(secretName) `
+        -mode Getkey
+      azurePowerShellVersion: "LatestVersion"
+  - task: AzurePowerShell@5
+    inputs:
+      azureSubscription: "ArroyoTraining_Connection-NicolasTraining"
+      ScriptType: "FilePath"
+      ScriptPath: "$(Build.SourcesDirectory)/keygen.ps1"
+      scriptArguments: -kvName $(kvName) `
+        -secretName $(secretName) `
+        -passsafe $(vmPass) `
+        -mode Setkey
+      azurePowerShellVersion: "LatestVersion"

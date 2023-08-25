@@ -9,20 +9,18 @@ parameters:
       - custom
 
 steps:
-  - checkout: git://Infrastructure_Repo@${{ parameters.branch }}
+  - checkout: git://VM_Deploy@${{ parameters.branch }}
 
-  - bash: echo $(webName)
-  - bash: echo $(apiName)
   - task: CopyFiles@2
     inputs:
-      SourceFolder: "$(Pipeline.Workspace)/s/Templates"
+      SourceFolder: "$(Pipeline.Workspace)/s/templates"
       Contents: "*.json"
       TargetFolder: "$(Build.StagingDirectory)"
     displayName: "Copy .JSON ARM Templates"
 
   - task: CopyFiles@2
     inputs:
-      SourceFolder: "$(Pipeline.Workspace)/s"
+      SourceFolder: "$(Pipeline.Workspace)/s/scripts"
       Contents: "*.ps1"
       TargetFolder: "$(Build.StagingDirectory)"
     displayName: "Copy .PS1 Powershell Scripts"

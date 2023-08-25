@@ -4,12 +4,12 @@ jobs:
       pool:
           vmImage: ubuntu-latest
       steps:
-          - template: ../jobs/azure-artifact.yml
+          - template: jobs/azure-artifact.yml
 
-    - job: infradeploy
-      displayName: "Deploy Azure IBC Artifact"
+    - job: kvstodeploy
+      displayName: "Install Extension in VM and Setup AD Roles"
       pool:
           vmImage: ubuntu-latest
       dependsOn: infraartifact
       steps:
-          - template: ../jobs/azure-infra.yml
+          - template: jobs/azure-adlogin.yml

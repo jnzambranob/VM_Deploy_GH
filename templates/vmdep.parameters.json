@@ -19,6 +19,12 @@
     },
     "vmLock": {
       "value": "No"
+    },
+    "storageAccountName": {
+      "value": "default"
+    },
+    "prefixname": {
+      "value": "default"
     }
   }
 }

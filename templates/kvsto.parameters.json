@@ -1,24 +1,31 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {
-    "adminUsername": {
-      "value": "trainingvm"
+  "parameters": 
+  {
+    "enableSoftDelete": 
+    {
+      "value": true
     },
-    "adminPassword": {
-      "value": "Aconsulting123!@"
-    },
-    "dnsLabelPrefix": {
-      "value": "nicolasz"
-    },
-    "vmSize": {
-      "value": "Standard_D2s_v3"
-    },
-    "sizeOfEachDataDiskInGB": {
-      "value": "20"
-    },
-    "vmLock": {
+    "lockKv": 
+    {
       "value": "No"
+    },
+    "storageAccountType": 
+    {
+      "value": "Standard_LRS"
+    },
+    "storageAccountName": {
+      "value": "default"
+    },
+    "vaultName": {
+      "value": "default-kvdefault"
+    },
+    "defobjectid": {
+      "value": "0bcc56ea-9c45-4c9a-8821-ec05f2ab34c0"
+    },
+    "defyamlobjectid": {
+      "value": "f5ca818e-0dde-4ce4-9ed1-72c08b34b117"
     }
   }
 }
