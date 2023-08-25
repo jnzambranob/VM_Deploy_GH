@@ -27,8 +27,6 @@ variables:
   #VM Variables
   - name: vmUser
     value: "trainingvm"
-  - name: vmPass
-    value: "Aconsulting123!@"
   - name: datadisksize
     value: "25"
   - name: vmSKU
