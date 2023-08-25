@@ -13,11 +13,11 @@ Function Get-RandomPassword {
         Uppercase   = (97..122) | Get-Random -Count 10 | % { [char]$_ }
         Lowercase   = (65..90)  | Get-Random -Count 10 | % { [char]$_ }
         Numeric     = (48..57)  | Get-Random -Count 10 | % { [char]$_ }
-        #SpecialChar = (33..47) + (58..64) + (91..96) + (123..126) | Get-Random -Count 10 | % { [char]$_ }
+        SpecialChar = (33,35,36,37,42) + (58,61..64) + (94,95) + (126) | Get-Random -Count 10 | % { [char]$_ }
     }
  
     #Frame Random Password from given character set
-    $StringSet = $CharacterSet.Uppercase + $CharacterSet.Lowercase + $CharacterSet.Numeric #+ $CharacterSet.SpecialChar
+    $StringSet = $CharacterSet.Uppercase + $CharacterSet.Lowercase + $CharacterSet.Numeric + $CharacterSet.SpecialChar
  
     -join (Get-Random -Count $PasswordLength -InputObject $StringSet)
 }
