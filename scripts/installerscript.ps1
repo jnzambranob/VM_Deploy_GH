@@ -7,7 +7,6 @@ $git = "choco install git -y"
 $vscode = "choco install vscode -y"
 $java = "choco install jre8 -y"
 $node = 'choco install nodejs-lts -y'
-$office = "choco install microsoft-office-deployment --version 16.0.16626.20148 -y"
 #GIT Credentials
 $name = "Arroyo Consulting DEV"
 $Email = "developer@arroyoconsulting.net"
