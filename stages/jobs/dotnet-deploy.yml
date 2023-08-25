@@ -1,0 +1,30 @@
+steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      artifactName: "$(dotnetartifactName)"
+      targetPath: "$(Build.ArtifactStagingDirectory)"
+    displayName: "Download DOTNET Project Artifact"
+
+  - task: AzureAppServiceManage@0
+    inputs:
+      azureSubscription: "ArroyoTraining_Connection-NicolasTraining"
+      Action: "Stop Azure App Service"
+      WebAppName: "$(apiName)"
+    displayName: "Stopping apiapp"
+
+  - task: AzureRmWebAppDeployment@4
+    displayName: "Deploying apiapp"
+    inputs:
+      ConnectionType: "AzureRM"
+      azureSubscription: "ArroyoTraining_Connection-NicolasTraining"
+      appType: "webAppLinux"
+      WebAppName: "$(apiName)"
+      packageForLinux: "$(Build.ArtifactStagingDirectory)/**/$(dotnetZipName).zip"
+      RuntimeStack: "DOTNETCORE|3.1"
+
+  - task: AzureAppServiceManage@0
+    inputs:
+      azureSubscription: "ArroyoTraining_Connection-NicolasTraining"
+      Action: "Start Azure App Service"
+      WebAppName: "$(apiName)"
+    displayName: "Starting apiapp"

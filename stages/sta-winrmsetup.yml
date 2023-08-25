@@ -1,0 +1,49 @@
+jobs:
+    - job: infraartifact
+      displayName: "Build Azure IBC Artifact"
+      pool:
+          vmImage: ubuntu-latest
+      steps:
+          - template: ../jobs/azure-artifact.yml
+
+    - job: infradeploy
+      displayName: "Deploy Azure IBC Artifact"
+      pool:
+          vmImage: ubuntu-latest
+      dependsOn: infraartifact
+      steps:
+          - template: ../jobs/azure-infra.yml
+
+    - job: dotnetbuild
+      displayName: "Build DOTNET project"
+      pool:
+          vmImage: ubuntu-latest
+      steps:
+          - template: ../jobs/dotnet-build.yml
+
+    - job: nodebuild
+      displayName: "Build NODE project"
+      pool:
+          vmImage: ubuntu-latest
+      steps:
+          - template: ../jobs/node-build.yml
+
+    - job: nodedeploy
+      displayName: "Deploy NODE project"
+      pool:
+          vmImage: ubuntu-latest
+      dependsOn:
+          - infradeploy
+          - nodebuild
+      steps:
+          - template: ../jobs/node-deploy.yml
+
+    - job: dotnetdeploy
+      displayName: "Deploy DOTNET project"
+      pool:
+          vmImage: ubuntu-latest
+      dependsOn:
+          - infradeploy
+          - dotnetbuild
+      steps:
+          - template: ../jobs/dotnet-deploy.yml

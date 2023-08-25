@@ -1,0 +1,34 @@
+parameters:
+  - name: branch
+    type: string
+    displayName: "Select Branch of the dotnet repo"
+    default: master
+
+steps:
+  - checkout: git://apidotnetcore@${{ parameters.branch }}
+
+  - task: UseDotNet@2
+    displayName: "Setting SDK version"
+    inputs:
+      packageType: "sdk"
+      version: "3.1.x"
+
+  - task: DotNetCoreCLI@2
+    displayName: "Building apiapp"
+    inputs:
+      command: build
+      projects: "**/*.csproj"
+      arguments: "--configuration $(buildConfiguration)"
+
+  - task: DotNetCoreCLI@2
+    displayName: "Publish and zip DOTNET apiapp"
+    inputs:
+      command: "publish"
+      publishWebProjects: false
+      arguments: "--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(dotnetZipName)"
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: "$(Build.StagingDirectory)"
+      artifact: "$(dotnetartifactName)"
+    displayName: "Publish DOTNET Project Artifact"

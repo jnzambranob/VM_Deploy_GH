@@ -1,0 +1,41 @@
+steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      artifactName: "$(artifactName)"
+      targetPath: "$(Build.SourcesDirectory)"
+    displayName: "Download Infrastructure Artifact"
+
+  - task: AzurePowerShell@5
+    inputs:
+      azureSubscription: "ArroyoTraining_Connection-NicolasTraining"
+      ScriptType: "FilePath"
+      ScriptPath: "$(Build.SourcesDirectory)/azpshscript.ps1"
+      scriptArguments: -kvName $(kvName) `
+        -secretName $(secretName) `
+        -mode Getkey
+      azurePowerShellVersion: "LatestVersion"
+
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      deploymentScope: "Resource Group"
+      azureResourceManagerConnection: "ArroyoTraining_Connection-NicolasTraining"
+      subscriptionId: "a4924200-2523-46cf-a092-0479ad3fe852"
+      action: "Create Or Update Resource Group"
+      resourceGroupName: "$(ResourceGroup)"
+      location: "$(resourcesLocation)"
+      templateLocation: "Linked artifact"
+      csmFile: "$(Build.SourcesDirectory)/fulldeploy.json"
+      csmParametersFile: "$(Build.SourcesDirectory)/fulldeploy.parameters.json"
+      overrideParameters: "-lockKv $(kvLock) -enableSoftDelete $(kvSoftdelete) -sqlDBName $(sqldbName) -administratorLoginPassword $(sqlsecret) -administratorLogin $(sqlLogin) -webAppName $(webName) -apiAppName $(apiName) -sqlserverName $(sqlName) -appInsightName $(insightName) -logAnalyticsName $(loganalyticsName) -storageAccountName $(storageName) -vaultName $(kvName)"
+      deploymentMode: "Incremental"
+
+  - task: AzurePowerShell@5
+    inputs:
+      azureSubscription: "ArroyoTraining_Connection-NicolasTraining"
+      ScriptType: "FilePath"
+      ScriptPath: "$(Build.SourcesDirectory)/azpshscript.ps1"
+      scriptArguments: -kvName $(kvName) `
+        -secretName $(secretName) `
+        -pass $(sqlsecret) `
+        -mode Setkey
+      azurePowerShellVersion: "LatestVersion"

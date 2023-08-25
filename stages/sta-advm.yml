@@ -1,0 +1,15 @@
+jobs:
+    - job: infraartifact
+      displayName: "Build Azure IBC Artifact"
+      pool:
+          vmImage: ubuntu-latest
+      steps:
+          - template: ../jobs/azure-artifact.yml
+
+    - job: infradeploy
+      displayName: "Deploy Azure IBC Artifact"
+      pool:
+          vmImage: ubuntu-latest
+      dependsOn: infraartifact
+      steps:
+          - template: ../jobs/azure-infra.yml
