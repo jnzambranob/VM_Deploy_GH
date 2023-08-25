@@ -28,7 +28,7 @@ variables:
   - name: vmUser
     value: "trainingvm"
   - name: datadisksize
-    value: "25"
+    value: "2"
   - name: vmSKU
     value: "Standard_D2s_v3"
   - name: vmLock
