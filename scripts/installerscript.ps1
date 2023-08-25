@@ -7,6 +7,7 @@ $git = "choco install git -y"
 $vscode = "choco install vscode -y"
 $java = "choco install jre8 -y"
 $node = 'choco install nodejs-lts -y'
+
 #GIT Credentials
 $name = "Arroyo Consulting DEV"
 $Email = "developer@arroyoconsulting.net"
@@ -44,5 +45,11 @@ Write-Output "------------Automated installation of all the tools-----------"
     git config --global user.email " + "$Email" + "
     git config --global core.longpaths true"
     Invoke-Expression $gitconf
-    Write-Output "------------INSTALLATION FINISHED!-----------"
+    Write-Output "------------Setting up WinRM Cert and Rules-----------"
+    Enable-PSRemoting -Force
+    New-NetFirewallRule -Name "Allow WinRM HTTPS" -DisplayName "WinRM HTTPS" -Enabled True -Profile Any -Action Allow -Direction Inbound -LocalPort 5986 -Protocol TCP
+    $thumbprint = (New-SelfSignedCertificate -DnsName $env:COMPUTERNAME -CertStoreLocation Cert:\LocalMachine\My).Thumbprint
+    $command = "winrm create winrm/config/Listener?Address=*+Transport=HTTPS @{Hostname=""$env:computername""; CertificateThumbprint=""$thumbprint""}"
+    cmd.exe /C $command
+    Write-Output "------------Installation Finished!-----------"
     exit
