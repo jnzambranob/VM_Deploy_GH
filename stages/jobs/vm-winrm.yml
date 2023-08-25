@@ -1,4 +1,5 @@
 steps:
-  - task: Delay@1
+  - task: CmdLine@2
     inputs:
-      delayForMinutes: '0'
+      script: |
+        echo NOTHING TO DO
