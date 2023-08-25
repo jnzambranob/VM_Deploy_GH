@@ -2,6 +2,6 @@ jobs:
     - job: kvstodeploy
       displayName: "Install Office Using WinRM"
       pool:
-          vmImage: ubuntu-latest
+          vmImage: windows-latest
       steps:
           - template: jobs/vm-winrm.yml
