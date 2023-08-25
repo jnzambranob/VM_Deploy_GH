@@ -18,10 +18,6 @@ Write-Output "------------Automated installation of all the tools-----------"
     Write-Output "------------Installing Chocolatey-----------"
     Invoke-Expression $chocolatey
     #pause
-    Write-Output "------------Installing OFFICE 2019-----------"
-    Invoke-Expression $office
-    Write-Output "FINISHED!"
-    #pause
     Write-Output "------------Installing NODE-----------"
     Invoke-Expression $node
     Write-Output "FINISHED!"
