@@ -1,5 +1,42 @@
 steps:
-  - task: CmdLine@2
+  - task: DownloadPipelineArtifact@2
     inputs:
-      script: |
-        echo NOTHING TO DO
+      artifactName: "$(artifactName)"
+      targetPath: "$(Build.SourcesDirectory)"
+    displayName: "Download Infrastructure Artifact"
+    
+  - task: AzurePowerShell@5
+    displayName: 'Retrieving VM Password'
+    inputs:
+      azureSubscription: "ArroyoTraining_Connection-NicolasTraining"
+      ScriptType: "FilePath"
+      ScriptPath: "$(Build.SourcesDirectory)/keygen.ps1"
+      scriptArguments: -kvName $(kvName) `
+        -secretName $(secretName) `
+        -mode Getkey
+      azurePowerShellVersion: "LatestVersion"
+
+  - task: AzurePowerShell@5
+    displayName: 'Retrieving VM IP Address'
+    inputs:
+      azureSubscription: 'ArroyoTraining_Connection-NicolasTraining'
+      ScriptType: 'InlineScript'
+      Inline: |
+        $ip=Get-AzPublicIpAddress -ResourceGroupName $(ResourceGroup) | Select IpAddress
+        $ipnum=$ip.IpAddress
+        Write-Host "##vso[task.setvariable variable=vmIP]$ipnum"
+      azurePowerShellVersion: 'LatestVersion'
+
+  - task: PowerShellOnTargetMachines@3
+    displayName: 'Running Commands through WinRM'
+    inputs:
+      Machines: '$(vmIP):5986'
+      UserName: '$(vmUser)'
+      UserPassword: '$(vmPass)'
+      InlineScript: |
+        $office = "choco install microsoft-office-deployment --version 16.0.16626.20148 -y"
+        Write-Output "------------Installing OFFICE 2019-----------"
+        Invoke-Expression $office
+        Write-Output "FINISHED!"
+        exit
+      NewPsSessionOptionArguments: '-SkipCACheck -SkipCNCheck -SkipRevocationCheck -IdleTimeout 7200000 -OperationTimeout 0'
